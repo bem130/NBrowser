@@ -5,19 +5,23 @@ namespace NBrowser
     public partial class Form1 : Form
     {
         string path;
+        string nowdoc;
         List<NMLOBJ> obj;
         HttpClient client;
         nBbi nbbi;
         string beforepath;
+        string mode;
         public Form1()
         {
             InitializeComponent();
             client = new HttpClient();
             nbbi = new nBbi();
+            mode = "NML";
             setPath("nbrowser://home");
             setPath("nbrowser://home");
             textBox1.Text = "nbrowser://home";
             getData();
+            comboBox1.SelectedIndex = 1;
         }
         public void setPath(string newpath)
         {
@@ -30,22 +34,110 @@ namespace NBrowser
         }
         async void getData()
         {
-            Clear();
+            string res = "not found";
             if (path.StartsWith("http://") || path.StartsWith("https://"))
             {
                 var getReult = await client.GetAsync(path);
-                var res = await getReult.Content.ReadAsStringAsync();
-                NMLpage(res);
+                res = await getReult.Content.ReadAsStringAsync();
             }
             else if (path.StartsWith("nbrowser"))
             {
-                string res = nbbi.get(path);
-                NMLpage(res);
+                res = nbbi.get(path);
+            }
+            nowdoc = res;
+            showData(res);
+        }
+        void showData(string res)
+        {
+            Clear();
+            switch (mode)
+            {
+                case "NML":
+                    NMLpage(res);
+                    break;
+                case "Text":
+                    TXTpage(res);
+                    break;
+                default:
+                    TXTpage(res);
+                    break;
             }
         }
         void Clear()
         {
             pagebody.Controls.Clear();
+        }
+        // for TXT
+        void TXTpage(string data)
+        {
+            obj = new List<NMLOBJ>();
+            {
+                int i = 0;
+                string t = data;
+                string nstxt = "";
+                while (t.Length > i)
+                {
+                    if (t[i] == '\n')
+                    {
+                        if (nstxt.Length > 0)
+                        {
+                            obj.Add(new NMLOBJ("text", 0, nstxt, "", ""));
+                        }
+                        obj.Add(new NMLOBJ("br", 0, "", "", ""));
+                        nstxt = "";
+                    }
+                    else
+                    {
+                        nstxt += t[i];
+                    }
+                    i++;
+                }
+                if (nstxt.Length > 0)
+                {
+                    obj.Add(new NMLOBJ("text", 0, nstxt, "", ""));
+                    nstxt = "";
+                }
+            }
+            TXTShow();
+        }
+        public void TXTShow()
+        {
+            ScrollableControl sbody = new ScrollableControl();
+            sbody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            sbody.AutoScroll = true;
+            var psize = pagebody.Size;
+            sbody.Size = new Size(psize.Width - 2, psize.Height - 2);
+            Label label;
+            Button button;
+            Size size;
+            int top = 0;
+            int left = 0;
+            for (int i = 0; i < obj.Count; i++)
+            {
+                NMLOBJ objItem = obj[i];
+                switch (objItem.type)
+                {
+                    case "text":
+                        label = new Label();
+                        label.Name = "text";
+                        label.Text = objItem.text;
+                        label.AutoSize = true;
+                        label.Location = new System.Drawing.Point(left, top);
+                        label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+                        sbody.Controls.Add(label);
+                        size = label.Size;
+                        left += size.Width;
+                        top += size.Height - 25;
+                        break;
+                    case "br":
+                        left = 0;
+                        top += 25;
+                        break;
+                }
+                pagebody.Controls.Add(sbody);
+            }
         }
 
 
@@ -179,6 +271,12 @@ namespace NBrowser
         {
             setPath("nbrowser://home");
             getData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mode = ((ComboBox)sender).Text;
+            showData(nowdoc);
         }
     }
 }
