@@ -4,6 +4,7 @@ namespace NBrowser
 {
     public partial class Form1 : Form
     {
+        string wintitle;
         string path;
         string nowdoc;
         List<NMLOBJ> obj;
@@ -14,6 +15,7 @@ namespace NBrowser
         public Form1()
         {
             InitializeComponent();
+            wintitle = this.Text;
             client = new HttpClient();
             nbbi = new nBbi();
             mode = "NML";
@@ -46,6 +48,18 @@ namespace NBrowser
             }
             nowdoc = res;
             showData(res);
+        }
+        void settitle(string title)
+        {
+            if (title.Length>0)
+            {
+                this.Text = wintitle + " - " + title;
+            }
+            else
+            {
+                this.Text = wintitle;
+            }
+            return;
         }
         void showData(string res)
         {
@@ -162,6 +176,7 @@ namespace NBrowser
             Label label;
             Button button;
             Size size;
+            bool tflag = false;
             int top = 0;
             int left = 0;
             for (int i = 0; i < obj.Count; i++)
@@ -201,6 +216,11 @@ namespace NBrowser
                         top += size.Height - 25;
                         break;
                     case "dtitle":
+                        if (!tflag)
+                        {
+                            settitle(objItem.content);
+                        }
+                        tflag = true;
                         top += 30;
                         left = 0;
                         label = new Label();
