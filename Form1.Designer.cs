@@ -34,6 +34,7 @@
             this.pagebody = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.pagebody.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -82,7 +83,7 @@
             this.textBox1.Location = new System.Drawing.Point(41, 1);
             this.textBox1.Margin = new System.Windows.Forms.Padding(1);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(1138, 23);
+            this.textBox1.Size = new System.Drawing.Size(1138, 31);
             this.textBox1.TabIndex = 0;
             // 
             // pagebody
@@ -105,6 +106,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.pagebody.ResumeLayout(false);
+            this.pagebody.PerformLayout();
             this.ResumeLayout(false);
 
         }

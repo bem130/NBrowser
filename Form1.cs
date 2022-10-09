@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Windows.Forms;
 
 namespace NBrowser
 {
@@ -47,14 +48,11 @@ namespace NBrowser
         }
         public void NMLShow()
         {
-            FlowLayoutPanel nmlb = new FlowLayoutPanel();
-            nmlb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            nmlb.Size = new System.Drawing.Size(1138, 1203);
-
             Label label;
             Button button;
+            Size size;
+            int top = 0;
+            int left = 0;
             for (int i = 0; i < obj.Count; i++)
             {
                 NMLOBJ objItem = obj[i];
@@ -64,30 +62,61 @@ namespace NBrowser
                         label = new Label();
                         label.Name = "text";
                         label.Text = objItem.text;
-                        label.Size = new System.Drawing.Size(1000, 30);
+                        label.AutoSize = true;
+                        label.Location = new System.Drawing.Point(30+left, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-                        nmlb.Controls.Add(label);
+                        pagebody.Controls.Add(label);
+                        size = label.Size;
+                        left += size.Width;
+                        top += size.Height - 25;
+                        break;
+                    case "link":
+                        LinkLabel linklabel;
+                        linklabel = new LinkLabel();
+                        linklabel.Name = "text";
+                        linklabel.Text = objItem.text;
+                        linklabel.AutoSize = true;
+                        linklabel.Location = new System.Drawing.Point(30+left, top);
+                        linklabel.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+                        linklabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this._LinkClicked);
+                        size = linklabel.Size;
+                        left += size.Width;
+                        pagebody.Controls.Add(linklabel);
+                        top += size.Height-25;
                         break;
                     case "dtitle":
+                        top += 30;
+                        left = 0;
                         label = new Label();
+                        label.TabIndex = 0;
                         label.Name = "text";
                         label.Text = objItem.content;
-                        label.Size = new System.Drawing.Size(1000, 50);
+                        label.AutoSize = true;
+                        label.Location = new System.Drawing.Point(3, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 20, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-                        nmlb.Controls.Add(label);
+                        pagebody.Controls.Add(label);
+                        top += 50;
                         break;
                     case "title":
+                        top += 30;
+                        left = 0;
                         label = new Label();
                         label.Name = "text";
+                        label.TabIndex = 0;
                         label.Text = objItem.content;
-                        label.Size = new System.Drawing.Size(1000, 40);
+                        label.AutoSize = true;
+                        label.Location = new System.Drawing.Point(3, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 15, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-                        nmlb.Controls.Add(label);
+                        pagebody.Controls.Add(label);
+                        top += 40;
                         break;
                 }
             }
-            pagebody.Controls.Add(nmlb);
         }
 
+        private void _LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
     }
 }
