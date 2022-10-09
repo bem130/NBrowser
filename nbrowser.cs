@@ -17,7 +17,7 @@ namespace NBrowser
             switch (path.Remove(0,11))
             {
                 case "home":
-                    return "# home\n[open](https://raw.githubusercontent.com/bem130/markup/master/readme.nml)\nhello\n[https://bem130.github.io/markup/editor]\n[https://bem130.github.io/markup/editor]";
+                    return "# home\n\n#1 about neknaj markup\n[https://raw.githubusercontent.com/bem130/markup/master/readme.nml]";
                     break;
                 default:
                     return "# not found";

@@ -168,6 +168,7 @@ namespace NBrowser
                         else if (t[i] != '(')
                         {
                             cblk.Add(new NMLOBJ("link", 0, t1, t1, ""));
+                            i--;
                         }
                         else
                         {
