@@ -125,6 +125,20 @@ namespace NBrowser
                         pagebody.Controls.Add(label);
                         top += 40;
                         break;
+                    case "cblock":
+                        top += 30;
+                        left = 0;
+                        label = new Label();
+                        label.Name = "text";
+                        label.TabIndex = 0;
+                        label.Text = objItem.content;
+                        label.BackColor = System.Drawing.Color.Gainsboro;
+                        label.AutoSize = true;
+                        label.Location = new System.Drawing.Point(30, top);
+                        label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+                        pagebody.Controls.Add(label);
+                        top += 40;
+                        break;
                 }
             }
         }

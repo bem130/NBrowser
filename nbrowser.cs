@@ -17,7 +17,10 @@ namespace NBrowser
             switch (path.Remove(0,11))
             {
                 case "home":
-                    return "# home\n\n#1 about neknaj markup\n[https://raw.githubusercontent.com/bem130/markup/master/readme.nml]";
+                    return "# home\n\n#1 about neknaj markup\n[https://raw.githubusercontent.com/bem130/markup/master/readme.nml]\n\n\n#1 welcome page\n[welcome-page](nbrowser://welcome)";
+                    break;
+                case "welcome":
+                    return "# welcome\nthis is a web browser for Neknaj Markup Languages";
                     break;
                 default:
                     return "# not found";
