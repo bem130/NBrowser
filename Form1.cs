@@ -1,7 +1,3 @@
-using System.Diagnostics;
-using System.Net.Http;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 
 namespace NBrowser
@@ -12,17 +8,21 @@ namespace NBrowser
         List<NMLOBJ> obj;
         HttpClient client;
         nBbi nbbi;
+        string beforepath;
         public Form1()
         {
             InitializeComponent();
             client = new HttpClient();
             nbbi = new nBbi();
             setPath("nbrowser://home");
+            setPath("nbrowser://home");
             textBox1.Text = "nbrowser://home";
             getData();
         }
         public void setPath(string newpath)
         {
+            textBox1.Text = newpath;
+            beforepath = path;
             path = newpath;
         }
         public void Reload()
@@ -48,6 +48,7 @@ namespace NBrowser
             pagebody.Controls.Clear();
         }
 
+
         // for NML
 
         void NMLpage(string data)
@@ -65,7 +66,7 @@ namespace NBrowser
             | System.Windows.Forms.AnchorStyles.Right)));
             sbody.AutoScroll = true;
             var psize = pagebody.Size;
-            sbody.Size = new Size(psize.Width-2,psize.Height-2);
+            sbody.Size = new Size(psize.Width - 2, psize.Height - 2);
             Label label;
             Button button;
             Size size;
@@ -81,7 +82,7 @@ namespace NBrowser
                         label.Name = "text";
                         label.Text = objItem.text;
                         label.AutoSize = true;
-                        label.Location = new System.Drawing.Point(30+left, top);
+                        label.Location = new System.Drawing.Point(30 + left, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
                         sbody.Controls.Add(label);
                         size = label.Size;
@@ -99,13 +100,13 @@ namespace NBrowser
                         linklabel.Text = objItem.text;
                         linklabel.Tag = objItem;
                         linklabel.AutoSize = true;
-                        linklabel.Location = new System.Drawing.Point(30+left, top);
+                        linklabel.Location = new System.Drawing.Point(30 + left, top);
                         linklabel.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
                         linklabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this._LinkClicked);
                         size = linklabel.Size;
                         left += size.Width;
                         sbody.Controls.Add(linklabel);
-                        top += size.Height-25;
+                        top += size.Height - 25;
                         break;
                     case "dtitle":
                         top += 30;
@@ -157,7 +158,6 @@ namespace NBrowser
             NMLOBJ linklabel = (NMLOBJ)((LinkLabel)sender).Tag;
             setPath(linklabel.content);
             getData();
-            textBox1.Text = linklabel.content;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -166,5 +166,19 @@ namespace NBrowser
             getData();
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ((Button)sender).Enabled = false;
+            var newpath = beforepath;
+            setPath(newpath);
+            getData();
+            ((Button)sender).Enabled = true;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            setPath("nbrowser://home");
+            getData();
+        }
     }
 }
