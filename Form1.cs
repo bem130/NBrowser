@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -36,6 +37,7 @@ namespace NBrowser
         }
         void Clear()
         {
+            pagebody.Controls.Clear();
         }
 
         // for NML
@@ -75,6 +77,7 @@ namespace NBrowser
                         linklabel = new LinkLabel();
                         linklabel.Name = "text";
                         linklabel.Text = objItem.text;
+                        linklabel.Tag = objItem;
                         linklabel.AutoSize = true;
                         linklabel.Location = new System.Drawing.Point(30+left, top);
                         linklabel.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -116,7 +119,17 @@ namespace NBrowser
 
         private void _LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            NMLOBJ linklabel = (NMLOBJ)((LinkLabel)sender).Tag;
+            setPath(linklabel.content);
+            getData();
+            textBox1.Text = linklabel.content;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            setPath(textBox1.Text);
+            getData();
+        }
+
     }
 }
