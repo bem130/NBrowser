@@ -54,10 +54,18 @@ namespace NBrowser
         {
             NMLParser NMLparser = new NMLParser();
             obj = NMLparser.parse(data);
+            obj.Add(new NMLOBJ("text"));
             NMLShow();
         }
         public void NMLShow()
         {
+            ScrollableControl sbody = new ScrollableControl();
+            sbody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            sbody.AutoScroll = true;
+            var psize = pagebody.Size;
+            sbody.Size = new Size(psize.Width-2,psize.Height-2);
             Label label;
             Button button;
             Size size;
@@ -75,7 +83,7 @@ namespace NBrowser
                         label.AutoSize = true;
                         label.Location = new System.Drawing.Point(30+left, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-                        pagebody.Controls.Add(label);
+                        sbody.Controls.Add(label);
                         size = label.Size;
                         left += size.Width;
                         top += size.Height - 25;
@@ -96,7 +104,7 @@ namespace NBrowser
                         linklabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this._LinkClicked);
                         size = linklabel.Size;
                         left += size.Width;
-                        pagebody.Controls.Add(linklabel);
+                        sbody.Controls.Add(linklabel);
                         top += size.Height-25;
                         break;
                     case "dtitle":
@@ -109,7 +117,7 @@ namespace NBrowser
                         label.AutoSize = true;
                         label.Location = new System.Drawing.Point(3, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 20, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-                        pagebody.Controls.Add(label);
+                        sbody.Controls.Add(label);
                         top += 50;
                         break;
                     case "title":
@@ -122,7 +130,7 @@ namespace NBrowser
                         label.AutoSize = true;
                         label.Location = new System.Drawing.Point(3, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 15, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-                        pagebody.Controls.Add(label);
+                        sbody.Controls.Add(label);
                         top += 40;
                         break;
                     case "cblock":
@@ -136,10 +144,11 @@ namespace NBrowser
                         label.AutoSize = true;
                         label.Location = new System.Drawing.Point(30, top);
                         label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-                        pagebody.Controls.Add(label);
-                        top += 40;
+                        sbody.Controls.Add(label);
+                        top += label.Size.Height;
                         break;
                 }
+                pagebody.Controls.Add(sbody);
             }
         }
 

@@ -22,6 +22,9 @@ namespace NBrowser
                 case "welcome":
                     return "# welcome\nthis is a web browser for Neknaj Markup Languages";
                     break;
+                case "test":
+                    return "# welcome\nthis is a web browser for Neknaj Markup Languages\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\naaaaa";
+                    break;
                 default:
                     return "# not found";
                     break;
