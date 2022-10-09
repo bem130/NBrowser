@@ -31,7 +31,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pagebody = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +45,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pagebody, 0, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 9);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -85,13 +85,16 @@
             this.textBox1.Size = new System.Drawing.Size(1138, 23);
             this.textBox1.TabIndex = 0;
             // 
-            // panel1
+            // pagebody
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.panel1.Location = new System.Drawing.Point(3, 43);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1260, 697);
-            this.panel1.TabIndex = 1;
+            this.pagebody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pagebody.BackColor = System.Drawing.SystemColors.Control;
+            this.pagebody.Location = new System.Drawing.Point(3, 43);
+            this.pagebody.Name = "pagebody";
+            this.pagebody.Size = new System.Drawing.Size(1260, 697);
+            this.pagebody.TabIndex = 1;
             // 
             // Form1
             // 
@@ -110,6 +113,6 @@
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;
         private TextBox textBox1;
-        private Panel panel1;
+        public Panel pagebody;
     }
 }
