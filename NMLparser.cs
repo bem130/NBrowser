@@ -83,10 +83,10 @@ namespace NBrowser
                         string content = "";
                         while (t.Length > i)
                         {
-                            if (t[i] == '\n' && t[i + 1] == '}' && t[i + 2] == '}') { i += 3; break; }
+                            if (t.Length>i+2&&t[i] == '\n' && t[i + 1] == '}' && t[i + 2] == '}') { i += 3; break; }
                             i++;
                             content += t[i - 1];
-                            if (t[i] == '\n' && t[i + 1] == '\\' && t[i + 2] == '}' && t[i + 3] == '}') { i += 2; content += "\n"; }
+                            if (t.Length>i+3&&t[i] == '\n' && t[i + 1] == '\\' && t[i + 2] == '}' && t[i + 3] == '}') { i += 2; content += "\n"; }
                         }
                         if (type.StartsWith("embed:"))
                         {
