@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -159,8 +160,15 @@ namespace NBrowser
                             t1 += t[i];
                             i++;
                         }
-                        i++;
-                        if (t.Length > i && t[i] != '(') { i--; cblk.Add(new NMLOBJ("link", 0, t1, t1, "")); }
+                        i += 1;
+                        if (t.Length<=i)
+                        {
+                            cblk.Add(new NMLOBJ("link", 0, t1, t1, ""));
+                        }
+                        else if (t[i] != '(')
+                        {
+                            cblk.Add(new NMLOBJ("link", 0, t1, t1, ""));
+                        }
                         else
                         {
                             i++;
@@ -202,6 +210,15 @@ namespace NBrowser
                         }
                         cblk.Add(new NMLOBJ("alias", 0, names[0], "", String.Join(" ", names)));
                     }
+                }
+                else if (t[i] == '\n')
+                {
+                    if (nstxt.Length > 0)
+                    {
+                        cblk.Add(new NMLOBJ("text", 0, nstxt, "", ""));
+                    }
+                    cblk.Add(new NMLOBJ("br", 0, "", "", ""));
+                    nstxt = "";
                 }
                 else
                 {

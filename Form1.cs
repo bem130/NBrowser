@@ -11,11 +11,14 @@ namespace NBrowser
         string path;
         List<NMLOBJ> obj;
         HttpClient client;
+        nBbi nbbi;
         public Form1()
         {
             InitializeComponent();
             client = new HttpClient();
-            setPath("https://raw.githubusercontent.com/bem130/markup/master/readme.nml");
+            nbbi = new nBbi();
+            setPath("nbrowser://home");
+            textBox1.Text = "nbrowser://home";
             getData();
         }
         public void setPath(string newpath)
@@ -32,6 +35,11 @@ namespace NBrowser
             {
                 var getReult = await client.GetAsync(path);
                 var res = await getReult.Content.ReadAsStringAsync();
+                NMLpage(res);
+            }
+            else if (path.StartsWith("nbrowser"))
+            {
+                string res = nbbi.get(path);
                 NMLpage(res);
             }
         }
@@ -71,6 +79,10 @@ namespace NBrowser
                         size = label.Size;
                         left += size.Width;
                         top += size.Height - 25;
+                        break;
+                    case "br":
+                        left = 0;
+                        top += 25;
                         break;
                     case "link":
                         LinkLabel linklabel;
