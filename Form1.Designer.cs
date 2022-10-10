@@ -147,7 +147,8 @@
             this.comboBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.comboBox1.Items.AddRange(new object[] {
             "Text",
-            "NML"});
+            "NML",
+            "HTML"});
             this.comboBox1.Location = new System.Drawing.Point(1123, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(134, 33);

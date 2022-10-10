@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace NBrowser
@@ -7,11 +8,16 @@ namespace NBrowser
         string wintitle;
         string path;
         string nowdoc;
-        List<NMLOBJ> obj;
+        List<NMLOBJ> NMLobj;
+        List<HTMLOBJ> HTMLobj;
         HttpClient client;
         nBbi nbbi;
         string beforepath;
         string mode;
+        ScrollableControl sbody;
+        Size size;
+        int top;
+        int left;
         public Form1()
         {
             InitializeComponent();
@@ -69,6 +75,9 @@ namespace NBrowser
                 case "NML":
                     NMLpage(res);
                     break;
+                case "HTML":
+                    HTMLpage(res);
+                    break;
                 case "Text":
                     TXTpage(res);
                     break;
@@ -84,7 +93,7 @@ namespace NBrowser
         // for TXT
         void TXTpage(string data)
         {
-            obj = new List<NMLOBJ>();
+            NMLobj = new List<NMLOBJ>();
             {
                 int i = 0;
                 string t = data;
@@ -95,9 +104,9 @@ namespace NBrowser
                     {
                         if (nstxt.Length > 0)
                         {
-                            obj.Add(new NMLOBJ("text", 0, nstxt, "", ""));
+                            NMLobj.Add(new NMLOBJ("text", 0, nstxt, "", ""));
                         }
-                        obj.Add(new NMLOBJ("br", 0, "", "", ""));
+                        NMLobj.Add(new NMLOBJ("br", 0, "", "", ""));
                         nstxt = "";
                     }
                     else
@@ -108,7 +117,7 @@ namespace NBrowser
                 }
                 if (nstxt.Length > 0)
                 {
-                    obj.Add(new NMLOBJ("text", 0, nstxt, "", ""));
+                    NMLobj.Add(new NMLOBJ("text", 0, nstxt, "", ""));
                     nstxt = "";
                 }
             }
@@ -116,7 +125,8 @@ namespace NBrowser
         }
         public void TXTShow()
         {
-            ScrollableControl sbody = new ScrollableControl();
+            settitle(path);
+            sbody = new ScrollableControl();
             sbody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -125,12 +135,11 @@ namespace NBrowser
             sbody.Size = new Size(psize.Width - 2, psize.Height - 2);
             Label label;
             Button button;
-            Size size;
-            int top = 0;
-            int left = 0;
-            for (int i = 0; i < obj.Count; i++)
+            top = 0;
+            left = 0;
+            for (int i = 0; i < NMLobj.Count; i++)
             {
-                NMLOBJ objItem = obj[i];
+                NMLOBJ objItem = NMLobj[i];
                 switch (objItem.type)
                 {
                     case "text":
@@ -155,18 +164,75 @@ namespace NBrowser
         }
 
 
+        // for HTML
+
+        void HTMLpage(string data)
+        {
+            HTMLParser HTMLparser = new HTMLParser();
+            HTMLobj = HTMLparser.parse(data);
+            HTMLShow();
+        }
+        public void HTMLShow()
+        {
+            settitle(path);
+            sbody = new ScrollableControl();
+            sbody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            sbody.AutoScroll = true;
+            var psize = pagebody.Size;
+            sbody.Size = new Size(psize.Width - 2, psize.Height - 2);
+            top = 0;
+            left = 0;
+            _htmlshow(HTMLobj);
+        }
+        void _htmlshow(List<HTMLOBJ> thtmlobj)
+        {
+            Label label;
+            Button button;
+            for (int i = 0; i < thtmlobj.Count; i++)
+            {
+                HTMLOBJ objItem = thtmlobj[i];
+                switch (objItem.tag)
+                {
+                    case "text":
+                        label = new Label();
+                        label.Name = "text";
+                        label.Text = objItem.textchild;
+                        label.AutoSize = true;
+                        label.Location = new System.Drawing.Point(left, top);
+                        label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+                        sbody.Controls.Add(label);
+                        size = label.Size;
+                        left += size.Width;
+                        top += size.Height - 25;
+                        left = 0;
+                        top += 25;
+                        break;
+                    case "br":
+                        left = 0;
+                        top += 25;
+                        break;
+                    default:
+                        _htmlshow(objItem.child);
+                        break;
+                }
+                pagebody.Controls.Add(sbody);
+            }
+        }
+
         // for NML
 
         void NMLpage(string data)
         {
             NMLParser NMLparser = new NMLParser();
-            obj = NMLparser.parse(data);
-            obj.Add(new NMLOBJ("text"));
+            NMLobj = NMLparser.parse(data);
+            NMLobj.Add(new NMLOBJ("text"));
             NMLShow();
         }
         public void NMLShow()
         {
-            ScrollableControl sbody = new ScrollableControl();
+            sbody = new ScrollableControl();
             sbody.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -177,11 +243,11 @@ namespace NBrowser
             Button button;
             Size size;
             bool tflag = false;
-            int top = 0;
-            int left = 0;
-            for (int i = 0; i < obj.Count; i++)
+            top = 0;
+            left = 0;
+            for (int i = 0; i < NMLobj.Count; i++)
             {
-                NMLOBJ objItem = obj[i];
+                NMLOBJ objItem = NMLobj[i];
                 switch (objItem.type)
                 {
                     case "text":
