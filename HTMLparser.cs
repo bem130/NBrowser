@@ -55,7 +55,7 @@ namespace NBrowser
                                     i++;
                                     break; 
                                 }
-                                child += "</";
+                                child += "<";
                                 i++;
                                 ocnt--;
                             }
