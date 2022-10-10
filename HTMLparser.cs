@@ -32,13 +32,13 @@ namespace NBrowser
                 {
                     tfflag = true;
                     i++;
-                    while (!(t[i] == '>' || t[i]==' ')&&t.Length>i)
+                    while (t.Length > i&&!(t[i] == '>' || t[i]==' '))
                     {
                         tag += t[i];
                         i++;
                     }
-                    if (t[i]==' ') { i++; }
-                    while (t[i]!='>'&&t.Length>i)
+                    if (t.Length>i&&t[i]==' ') { i++; }
+                    while (t.Length > i&&t[i]!='>')
                     {
                         att += t[i];
                         i++;
@@ -47,14 +47,22 @@ namespace NBrowser
                     int ocnt = 0;
                     while (t.Length>i)
                     {
-                        if (t[i] == '<' && t[i+1]=='/')
+                        if (t[i] == '<')
                         {
-                            if (ocnt==0) { i++;break; }
-                            child += "</";
-                            i++;
-                            ocnt--;
+                            if (t[i + 1] == '/')
+                            {
+                                if (ocnt == 0) { 
+                                    i++;
+                                    break; 
+                                }
+                                child += "</";
+                                i++;
+                                ocnt--;
+                            }
+                            else {
+                                ocnt++;
+                            }
                         }
-                        else if (t[i]=='<') { ocnt++; }
                         child += t[i];
                         i++;
                     }
