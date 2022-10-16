@@ -14,6 +14,7 @@ namespace NBrowser
         }
         public List<NMLOBJ> parse(string t)
         {
+            t = t.Replace("\r\n", "\n");
             int i = 0;
             string nstxt = "";
             List<NMLOBJ> ret = new List<NMLOBJ>();

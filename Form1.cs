@@ -349,9 +349,46 @@ namespace NBrowser
                         {
                             picbox.Width = (int)(sbody.Width * 0.8);
                             picbox.Height = (int)(sbody.Width * 0.8 / aratio);
+                            if (sbody.Width * 0.8 > 1000)
+                            {
+                                picbox.Width = (int)(1000 * aratio);
+                                picbox.Height = (int)(1000);
+                            }
                         }
                         sbody.Controls.Add(picbox);
                         top += picbox.Size.Height;
+                        break;
+                    case "embed":
+                        switch (objItem.text)
+                        {
+                            case "table":
+                                top += 30;
+                                left = 0;
+                                TableLayoutPanel tlp = new TableLayoutPanel();
+                                tlp.Location = new System.Drawing.Point(3, top);
+                                List<string> rows = new List<string> (objItem.content.Split('\n'));
+                                int rcnt = 0;
+                                int ccnt = 0;
+                                foreach (string row in rows)
+                                {
+                                    List<string> cols = new List<string>(row.Split(','));
+                                    int maxsize = 0;
+                                    foreach (string col in cols)
+                                    {
+                                        label = new Label();
+                                        label.Name = "text";
+                                        label.Text = col;
+                                        label.BackColor = System.Drawing.Color.Gainsboro;
+                                        label.AutoSize = true;
+                                        label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+                                        tlp.Controls.Add(label,ccnt,rcnt);
+                                        ccnt++;
+                                    }
+                                    rcnt++;
+                                }
+                                sbody.Controls.Add(tlp);
+                                break;
+                        }
                         break;
                 }
                 pagebody.Controls.Add(sbody);
