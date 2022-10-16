@@ -266,11 +266,11 @@ namespace NBrowser
                         left = 0;
                         top += 25;
                         break;
-                    case "link":
+                    case "url":
                         LinkLabel linklabel;
                         linklabel = new LinkLabel();
                         linklabel.Name = "text";
-                        linklabel.Text = objItem.text;
+                        linklabel.Text = objItem.content;
                         linklabel.Tag = objItem;
                         linklabel.AutoSize = true;
                         linklabel.Location = new System.Drawing.Point(30 + left, top);
@@ -325,6 +325,33 @@ namespace NBrowser
                         label.Font = new System.Drawing.Font("Meiryo UI", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
                         sbody.Controls.Add(label);
                         top += label.Size.Height;
+                        break;
+                    case "image":
+                        top += 30;
+                        left = 0;
+                        PictureBox picbox = new PictureBox();
+                        picbox.ImageLocation = objItem.content;
+                        picbox.SizeMode = PictureBoxSizeMode.StretchImage;
+                        picbox.Location = new System.Drawing.Point(3, top);
+                        Size pbs = picbox.ClientSize;
+                        double aratio = pbs.Width / pbs.Height;
+                        if (aratio>1)
+                        {
+                            picbox.Width = (int)(sbody.Height * 0.3 * aratio);
+                            picbox.Height = (int)(sbody.Height * 0.3);
+                            if (sbody.Height*0.3>300)
+                            {
+                                picbox.Width = (int)(300 * aratio);
+                                picbox.Height = (int)(300);
+                            }
+                        }
+                        else
+                        {
+                            picbox.Width = (int)(sbody.Width * 0.8);
+                            picbox.Height = (int)(sbody.Width * 0.8 / aratio);
+                        }
+                        sbody.Controls.Add(picbox);
+                        top += picbox.Size.Height;
                         break;
                 }
                 pagebody.Controls.Add(sbody);

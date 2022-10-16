@@ -140,91 +140,52 @@ namespace NBrowser
             }
             int i = 0;
             string nstxt = "";
+            string tag = "";
             List<NMLOBJ> cblk = new List<NMLOBJ>();
             while (t.Length > i)
             {
-                if (t[i] == '[' || ((t[i] == '{' || t[i] == '(') && t[i + 1] == ':')) // structure
+                if (t[i]=='{') // structure
                 {
-                    if (nstxt.Length > 0)
+                    if (nstxt.Length>0)
                     {
                         cblk.Add(new NMLOBJ("text", 0, nstxt, "", ""));
                         nstxt = "";
                     }
-                    if (t[i] == '[') // link
+                    i++;
+                    while (t.Length>i)
                     {
-                        string t1 = "";
-                        string t2 = "";
+                        if (t[i]==':')
+                        {
+                            break;
+                        }
+                        tag += t[i];
                         i++;
-                        while (t.Length > i && t[i] != ']')
-                        {
-                            t1 += t[i];
-                            i++;
-                        }
-                        i += 1;
-                        if (t.Length<=i)
-                        {
-                            cblk.Add(new NMLOBJ("link", 0, t1, t1, ""));
-                        }
-                        else if (t[i] != '(')
-                        {
-                            cblk.Add(new NMLOBJ("link", 0, t1, t1, ""));
-                            i--;
-                        }
-                        else
-                        {
-                            i++;
-                            while (t.Length > i && t[i] != ')')
-                            {
-                                t2 += t[i];
-                                i++;
-                            }
-                            cblk.Add(new NMLOBJ("link", 0, t1, t2, ""));
-                        }
                     }
-                    if (t.Length > i && t[i] == '{' && t[i + 1] == ':') // inline
+                    List<string> child = new List<string> { };
+                    string ctxt = "";
+                    i++;
+                    while (t.Length>i)
                     {
-                        string t1 = "";
-                        i += 2;
-                        while (t.Length > i && t[i] != '}')
+                        if (t[i]=='}')
                         {
-                            t1 += t[i];
-                            i++;
+                            child.Add(ctxt);
+                            cblk.Add(new NMLOBJ(tag, 0, nstxt, string.Join(';',child), ""));
                         }
-                        cblk.Add(new NMLOBJ("link", 0, t1, "", ""));
-                    }
-                    if (t.Length > i && t[i] == '{' && t[i + 1] == ':') // alias
-                    {
-                        List<string> names = new List<string>();
-                        string t1 = "";
-                        while (t.Length > i && t[i] != ')')
+                        else if (t[i]==';')
                         {
-                            if (t[i] == ',')
-                            {
-                                names.Add(t1);
-                                t1 = "";
-                            }
-                            else
-                            {
-                                t1 += t[i];
-                            }
+                            child.Add(ctxt);
                             i++;
+                            ctxt = "";
                         }
-                        cblk.Add(new NMLOBJ("alias", 0, names[0], "", String.Join(" ", names)));
+                        ctxt += t[i];
+                        i++;
                     }
-                }
-                else if (t[i] == '\n')
-                {
-                    if (nstxt.Length > 0)
-                    {
-                        cblk.Add(new NMLOBJ("text", 0, nstxt, "", ""));
-                    }
-                    cblk.Add(new NMLOBJ("br", 0, "", "", ""));
-                    nstxt = "";
                 }
                 else
                 {
                     nstxt += t[i];
                 }
+                tag = "";
                 i++;
             }
             if (nstxt.Length > 0)

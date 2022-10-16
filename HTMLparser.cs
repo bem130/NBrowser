@@ -53,9 +53,9 @@ namespace NBrowser
                             {
                                 if (ocnt == 0) { 
                                     i++;
-                                    break; 
+                                    break;
                                 }
-                                child += "<";
+                                //child += "<";
                                 i++;
                                 ocnt--;
                             }
@@ -63,7 +63,7 @@ namespace NBrowser
                                 ocnt++;
                             }
                         }
-                        child += t[i];
+                        //child += t[i];
                         i++;
                     }
                     i += 2;
