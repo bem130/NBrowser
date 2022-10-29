@@ -8,7 +8,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Authors>bem130</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="README.md">

@@ -21,6 +21,7 @@ namespace NBrowser
         public Form1()
         {
             InitializeComponent();
+            Opacity = 0.9;
             wintitle = this.Text;
             client = new HttpClient();
             nbbi = new nBbi();
